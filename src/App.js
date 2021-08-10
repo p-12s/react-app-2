@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyInput from './components/UI/input/MyInput';
@@ -11,13 +11,18 @@ function App() {
     {id: 4, title: "This is title 4", body: "This is body body body 4"},
   ])
 
-  const [title, setTitle] = useState('titlllle')
+  const [title, setTitle] = useState('')
+
+  const bodyInputRef = useRef();
 
   const addNewPost = (e) => {
     e.preventDefault();
 
     console.log(title);
+    console.log(bodyInputRef.current.value);
   }
+
+
 
   return (
     <div className="App">
@@ -26,7 +31,8 @@ function App() {
         {/* управляемый компонент */}
         <MyInput value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Title" />
 
-        <MyInput type="text" placeholder="Description" />
+        {/* неуправляемый компонент */}
+        <MyInput ref={bodyInputRef} type="text" placeholder="Description" />
 
         <MyButton onClick={addNewPost}>SeNd</MyButton>
       </form>

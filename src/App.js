@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import PostList from './components/PostList';
+import MyButton from './components/UI/button/MyButton';
+import MyInput from './components/UI/input/MyInput';
 
 function App() {
   const [posts, setPosts] = useState([
@@ -9,9 +11,25 @@ function App() {
     {id: 4, title: "This is title 4", body: "This is body body body 4"},
   ])
 
+  const [title, setTitle] = useState('titlllle')
+
+  const addNewPost = (e) => {
+    e.preventDefault();
+
+    console.log(title);
+  }
+
   return (
     <div className="App">
       <PostList posts={posts} title="This is new titlE"/>
+      <form>
+        {/* управляемый компонент */}
+        <MyInput value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Title" />
+
+        <MyInput type="text" placeholder="Description" />
+
+        <MyButton onClick={addNewPost}>SeNd</MyButton>
+      </form>
     </div>
   );
 }

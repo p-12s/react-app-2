@@ -1,0 +1,8 @@
+.myInput {
+  padding: 5px;
+  color: teal;
+  font: 14px Arial;
+  background-color: transparent;
+  border: 1px solid rgba(255, 0, 0, 0.795);
+  cursor: context-menu;
+}

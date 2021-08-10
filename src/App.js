@@ -19,7 +19,10 @@ function App() {
   return (
     <div className="App">
       <PostForm create={createPost}/>
-      <PostList remove={removePost} posts={posts} title="This is new titlE"/>
+      {posts.length
+        ? <PostList remove={removePost} posts={posts} title="This is new titlE"/>
+        : <h1 style={{textAligne: 'center'}}>Постов нет 😶‍🌫️😶‍🌫️😶‍🌫️</h1>
+      }
     </div>
   );
 }

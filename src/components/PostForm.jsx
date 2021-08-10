@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 import MyButton from './UI/button/MyButton';
 import MyInput from './UI/input/MyInput';
-import PostList from './PostList';
 
-const PostForm = () => {
-  const [posts, setPosts] = useState([
-    {id: 1, title: "This is title", body: "This is body body body"},
-    {id: 2, title: "This is title 2", body: "This is body body body 2"},
-    {id: 3, title: "This is title 3", body: "This is body body body 3"},
-    {id: 4, title: "This is title 4", body: "This is body body body 4"},
-  ])
 
+const PostForm = ({create}) => {
   const [post, setPost] = useState({title: '', body: ''})
 
   const addNewPost = (e) => {
     e.preventDefault();
-    setPosts([...posts, {...post, id: Date.now()}])
+
+    const newPost = {
+      ...post, id: Date.now()
+    }
+    create(newPost)
     setPost({title: '', body: ''})
   }
 
@@ -28,7 +25,7 @@ const PostForm = () => {
 
         <MyButton onClick={addNewPost}>SeNd</MyButton>
       </form>
-      <PostList posts={posts} title="This is new titlE"/>
+      
     </>
   );
 }

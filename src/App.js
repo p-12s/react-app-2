@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState} from 'react';
 import PostList from './components/PostList';
 import MyButton from './components/UI/button/MyButton';
 import MyInput from './components/UI/input/MyInput';
@@ -11,15 +11,12 @@ function App() {
     {id: 4, title: "This is title 4", body: "This is body body body 4"},
   ])
 
-  const [title, setTitle] = useState('')
-
-  const bodyInputRef = useRef();
+  const [post, setPost] = useState({title: '', body: ''})
 
   const addNewPost = (e) => {
     e.preventDefault();
-
-    console.log(title);
-    console.log(bodyInputRef.current.value);
+    setPosts([...posts, {...post, id: Date.now()}])
+    setPost({title: '', body: ''})
   }
 
 
@@ -29,10 +26,8 @@ function App() {
       <PostList posts={posts} title="This is new titlE"/>
       <form>
         {/* управляемый компонент */}
-        <MyInput value={title} onChange={e => setTitle(e.target.value)} type="text" placeholder="Title" />
-
-        {/* неуправляемый компонент */}
-        <MyInput ref={bodyInputRef} type="text" placeholder="Description" />
+        <MyInput value={post.title} onChange={e => setPost({...post, title: e.target.value})} type="text" placeholder="Title" />
+        <MyInput value={post.body} onChange={e => setPost({...post, body: e.target.value})} type="text" placeholder="Description" />
 
         <MyButton onClick={addNewPost}>SeNd</MyButton>
       </form>

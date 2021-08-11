@@ -11,3 +11,11 @@ useMemo();      -
 useCallback();  - 
 useContext();   - 
 ```
+
+## Дополнительные инстурменты
+Анимации - https://reactcommunity.org/react-transition-group/transition-group  
+
+## Жизненный цикл компонента
+Монтирование (mount)  
+Обновление (update)  
+Размонтирование (unmount)  

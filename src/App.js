@@ -2,6 +2,8 @@ import React, {useState, useMemo} from 'react';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import PostFilter from './components/PostFilter';
+import MyModal from './components/UI/modal/MyModal';
+import MyButton from './components/UI/button/MyButton';
 
 function App() {
   const [posts, setPosts] = useState([
@@ -9,6 +11,7 @@ function App() {
   ])
 
   const [filter, setFilter] = useState({sort: '', query: ''})
+  const [modal, setModal] = useState(false)
 
   const sortedPosts = useMemo(() => {
     if (filter.sort) {
@@ -24,6 +27,7 @@ function App() {
   // функции обратного вызова - их будут вызывать компоненты, т.к. напрямую у них доступа к изменению объекта нет
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
+    setModal(false);
   }
   const removePost = (post) => {
     setPosts(posts.filter(p => p.id !== post.id))
@@ -31,8 +35,10 @@ function App() {
 
   return (
     <div className="App">
-      <PostForm create={createPost}/>
-      <hr style={{margin: '15px 0'}}/>
+      <MyButton onClick={() => setModal(true)} style={{margin: '30px 0'}}>Create post</MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost}/>
+      </MyModal>
       <PostFilter filter={filter} setFilter={setFilter} />
       <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
     </div>

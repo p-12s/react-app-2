@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {usePost} from './hooks/usePosts';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
@@ -6,7 +6,7 @@ import PostFilter from './components/PostFilter';
 import MyModal from './components/UI/modal/MyModal';
 import MyButton from './components/UI/button/MyButton';
 import './styles/App.css';
-import axios from 'axios';
+import PostService from './API/PostService';
 
 function App() {
   const [posts, setPosts] = useState([])
@@ -24,9 +24,14 @@ function App() {
   }
 
   async function fetchPosts() {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    setPosts(response.data)
+    const posts = await PostService.getAll();
+    setPosts(posts)
   }
+  useEffect(() => {
+    fetchPosts()
+  }, []) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
+
+  
   return (
     <div className="App">
       <MyButton onClick={fetchPosts} style={{margin: '30px 0'}}>Get post</MyButton>

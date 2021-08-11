@@ -1,34 +1,25 @@
 import React, {useState, useMemo} from 'react';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
-import MySelect from './components/UI/select/MySelect';
-import MyInput from './components/UI/input/MyInput';
+import PostFilter from './components/PostFilter';
 
 function App() {
   const [posts, setPosts] = useState([
     {id: 1, title: "This is title", body: "This is body body body"},
   ])
 
-  const [selectedSort, setSelectedSort] = useState('')
-  const sortPost = (sort) => {
-    setSelectedSort(sort)
-  }
-
-  const [searchQuery, setSearchQuery] = useState('')
+  const [filter, setFilter] = useState({sort: '', query: ''})
 
   const sortedPosts = useMemo(() => {
-    console.log('sort function runnnnnnned')
-    if (selectedSort) {
-      return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]))
+    if (filter.sort) {
+      return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
     return posts
-
-  }, [selectedSort, posts])
+  }, [filter.sort, posts])
 
   const sortedAndSearchedPost = useMemo(() => {
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery))
-  
-  }, [searchQuery, sortedPosts])
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
+  }, [filter.query, sortedPosts])
 
   // функции обратного вызова - их будут вызывать компоненты, т.к. напрямую у них доступа к изменению объекта нет
   const createPost = (newPost) => {
@@ -38,33 +29,12 @@ function App() {
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
-  
-
-  
-
   return (
     <div className="App">
       <PostForm create={createPost}/>
-      <div>
-        <MyInput 
-          value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
-          placeholder="Search"
-        />
-        <MySelect 
-          defaultValue="Сортировка"
-          option={[
-            {value: 'title', name: 'по названию'},
-            {value: 'body', name: 'по описанию'},
-          ]}
-          value={selectedSort}
-          onChange={sortPost}
-        />
-      </div>
-      {sortedAndSearchedPost.length
-        ? <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
-        : <h1 style={{textAligne: 'center'}}>Постов нет 😶‍🌫️😶‍🌫️😶‍🌫️</h1>
-      }
+      <hr style={{margin: '15px 0'}}/>
+      <PostFilter filter={filter} setFilter={setFilter} />
+      <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
     </div>
   );
 }

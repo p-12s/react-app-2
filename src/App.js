@@ -13,7 +13,8 @@ function App() {
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
   const sortedAndSearchedPost = usePost(posts, filter.sort, filter.query)
-  
+  const [isPostLoading, setIsPostLoading] = useState(false)
+
   // функции обратного вызова - их будут вызывать компоненты, т.к. напрямую у них доступа к изменению объекта нет
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -24,8 +25,12 @@ function App() {
   }
 
   async function fetchPosts() {
-    const posts = await PostService.getAll();
-    setPosts(posts)
+    setIsPostLoading(true)
+    setTimeout(async () => {
+      const posts = await PostService.getAll();
+      setPosts(posts)
+      setIsPostLoading(false)
+    }, 1000);
   }
   useEffect(() => {
     fetchPosts()
@@ -40,7 +45,10 @@ function App() {
         <PostForm create={createPost}/>
       </MyModal>
       <PostFilter filter={filter} setFilter={setFilter} />
-      <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
+      { isPostLoading
+        ? <h1>Loading...</h1>
+        : <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
+      }
     </div>
   );
 }

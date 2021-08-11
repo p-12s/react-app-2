@@ -1,4 +1,5 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
+import {usePost} from './hooks/usePosts';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
 import PostFilter from './components/PostFilter';
@@ -7,24 +8,11 @@ import MyButton from './components/UI/button/MyButton';
 import './styles/App.css';
 
 function App() {
-  const [posts, setPosts] = useState([
-    {id: 1, title: "This is title", body: "This is body body body"},
-  ])
-
+  const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
-
-  const sortedPosts = useMemo(() => {
-    if (filter.sort) {
-      return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
-    }
-    return posts
-  }, [filter.sort, posts])
-
-  const sortedAndSearchedPost = useMemo(() => {
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
-  }, [filter.query, sortedPosts])
-
+  const sortedAndSearchedPost = usePost(posts, filter.sort, filter.query)
+  
   // функции обратного вызова - их будут вызывать компоненты, т.к. напрямую у них доступа к изменению объекта нет
   const createPost = (newPost) => {
     setPosts([...posts, newPost])

@@ -4,6 +4,7 @@ import PostList from './components/PostList';
 import PostFilter from './components/PostFilter';
 import MyModal from './components/UI/modal/MyModal';
 import MyButton from './components/UI/button/MyButton';
+import './styles/App.css';
 
 function App() {
   const [posts, setPosts] = useState([

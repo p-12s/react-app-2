@@ -12,6 +12,7 @@ import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
 import { getPageCount } from '../utils/pages';
 import { useObserver } from '../hooks/useObserver';
+import MySelect from '../components/UI/select/MySelect';
 
 function Posts() {
   const [posts, setPosts] = useState([])
@@ -46,7 +47,7 @@ function Posts() {
 
   useEffect(() => {
     fetchPosts(limit, page)
-  }, [page]) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
+  }, [page, limit]) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
 
   const changePage = (page) => {
     setPage(page)
@@ -60,6 +61,17 @@ function Posts() {
         <PostForm create={createPost}/>
       </MyModal>
       <PostFilter filter={filter} setFilter={setFilter} />
+      <MySelect 
+        value={limit} 
+        onChange={value => setLimit(value)}
+        defaultValue="Elements count"
+        option={[
+          {value: 5, name: '5'},
+          {value: 10, name: '10'},
+          {value: 20, name: '20'},
+          {value: -1, name: 'All'},
+        ]}
+      />
       { postError &&
         <h1>Произошла ошибка ${postError}</h1>
       }

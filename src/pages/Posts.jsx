@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {usePost} from '../hooks/usePosts';
 import PostForm from '../components/PostForm';
 import PostList from '../components/PostList';
@@ -11,6 +11,7 @@ import '../styles/App.css';
 import PostService from '../API/PostService';
 import { useFetching } from '../hooks/useFetching';
 import { getPageCount } from '../utils/pages';
+import { useObserver } from '../hooks/useObserver';
 
 function Posts() {
   const [posts, setPosts] = useState([])
@@ -20,10 +21,11 @@ function Posts() {
   const [limit, setLimit] = useState(5);
   const [page, setPage] = useState(1);
   const sortedAndSearchedPost = usePost(posts, filter.sort, filter.query)
+  const lastElement = useRef()
 
   const [fetchPosts, isPostLoading, postError] = useFetching(async (limit, page) => {
     const response = await PostService.getAll(limit, page );
-    setPosts(response.data)
+    setPosts([...posts, ...response.data])
 
     const totalCount = response.headers['x-total-count']
     setTotalPages(getPageCount(totalCount, limit) )
@@ -38,13 +40,16 @@ function Posts() {
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
+  useObserver(lastElement, page < totalPages, isPostLoading, () => {
+    setPage(page + 1);
+  })
+
   useEffect(() => {
     fetchPosts(limit, page)
-  }, []) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
+  }, [page]) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
 
   const changePage = (page) => {
     setPage(page)
-    fetchPosts(limit, page)
   }
 
   return (
@@ -58,9 +63,10 @@ function Posts() {
       { postError &&
         <h1>Произошла ошибка ${postError}</h1>
       }
-      { isPostLoading
-        ? <div style={{display:"flex", justifyContent: "center", marginTop: 50}}><MyLoader/></div>
-        : <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
+      <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
+      <div ref={lastElement} style={{height: 20, background: 'red'}}></div>
+      { isPostLoading &&
+        <div style={{display:"flex", justifyContent: "center", marginTop: 50}}><MyLoader/></div>
       }
       <MyPagination page={page} changePage={changePage} totalPages={totalPages}/>
     </div>

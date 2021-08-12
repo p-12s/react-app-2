@@ -14,6 +14,7 @@ useContext();   -
 
 ## Дополнительные инстурменты
 Анимации - https://reactcommunity.org/react-transition-group/transition-group  
+Router - https://reactrouter.com/web/guides/quick-start  
 
 ## Жизненный цикл компонента
 Монтирование (mount)  

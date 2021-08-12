@@ -1,4 +1,8 @@
 
+#root {
+  flex-direction: column;
+}
+
 .post-enter {
   transform: translate(-350px);
 }
@@ -28,4 +32,23 @@
 }
 .page__current {
   border: 1px solid salmon;
+}
+
+.navbar {
+  height: 50px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
+  background-color: chartreuse;
+}
+.navbar__link {
+  margin-right: 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: black;
+  font-size: 24px;
+  cursor: pointer;
+}
+.navbar__link:hover {
+  opacity: .4;
 }

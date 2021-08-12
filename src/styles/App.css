@@ -15,3 +15,17 @@
   transform: translate(-350px);
   transition: all 500ms ease-in;
 }
+
+.page__wrapper {
+  margin-top: 30px;
+  display: flex;
+}
+.page {
+  padding: 10px;
+  border: 1px solid teal;
+  cursor: pointer;
+  margin-right: 3px;
+}
+.page__current {
+  border: 1px solid salmon;
+}

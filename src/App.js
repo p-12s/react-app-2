@@ -5,6 +5,7 @@ import PostList from './components/PostList';
 import PostFilter from './components/PostFilter';
 import MyModal from './components/UI/modal/MyModal';
 import MyButton from './components/UI/button/MyButton';
+import MyLoader from './components/UI/loader/MyLoader';
 import './styles/App.css';
 import PostService from './API/PostService';
 
@@ -46,7 +47,7 @@ function App() {
       </MyModal>
       <PostFilter filter={filter} setFilter={setFilter} />
       { isPostLoading
-        ? <h1>Loading...</h1>
+        ? <div style={{display:"flex", justifyContent: "center", marginTop: 50}}><MyLoader/></div>
         : <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>
       }
     </div>

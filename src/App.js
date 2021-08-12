@@ -8,13 +8,18 @@ import MyButton from './components/UI/button/MyButton';
 import MyLoader from './components/UI/loader/MyLoader';
 import './styles/App.css';
 import PostService from './API/PostService';
+import { useFetching } from './hooks/useFetching';
 
 function App() {
   const [posts, setPosts] = useState([])
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
   const sortedAndSearchedPost = usePost(posts, filter.sort, filter.query)
-  const [isPostLoading, setIsPostLoading] = useState(false)
+  
+  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
+    const posts = await PostService.getAll();
+    setPosts(posts)
+  })
 
   // функции обратного вызова - их будут вызывать компоненты, т.к. напрямую у них доступа к изменению объекта нет
   const createPost = (newPost) => {
@@ -25,14 +30,6 @@ function App() {
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
-  async function fetchPosts() {
-    setIsPostLoading(true)
-    setTimeout(async () => {
-      const posts = await PostService.getAll();
-      setPosts(posts)
-      setIsPostLoading(false)
-    }, 1000);
-  }
   useEffect(() => {
     fetchPosts()
   }, []) // [] массив зависимостей будет пустым, чтобы функция отработала 1 раз
@@ -46,6 +43,9 @@ function App() {
         <PostForm create={createPost}/>
       </MyModal>
       <PostFilter filter={filter} setFilter={setFilter} />
+      { postError &&
+        <h1>Произошла ошибка ${postError}</h1>
+      }
       { isPostLoading
         ? <div style={{display:"flex", justifyContent: "center", marginTop: 50}}><MyLoader/></div>
         : <PostList remove={removePost} posts={sortedAndSearchedPost} title="This is new titlE"/>

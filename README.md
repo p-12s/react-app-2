@@ -1,5 +1,6 @@
 # React 
-Источник: https://www.youtube.com/watch?v=GNrdg3PzpJQ
+Источник: https://www.youtube.com/watch?v=GNrdg3PzpJQ  
+Результат: https://preact-app-2.herokuapp.com/ (логин/пароль - любые символы)  
 
 ### Хуки - встроенные функции реакта, которые можно использовать на верхнем уровне
 Их нельзя вкладывать в функции, циклы, условия  
